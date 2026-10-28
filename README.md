@@ -15,3 +15,7 @@ A Kanban-style task management application featuring a role-based model, priorit
 3. In the project root, run the command:
    ```bash
    docker-compose up --build
+Administrator email:
+Email: admin@task.com
+
+Password: Admin123!
