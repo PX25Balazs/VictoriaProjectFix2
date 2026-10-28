@@ -1,0 +1,125 @@
+﻿@model IEnumerable<TaskManagementApp.Models.TaskItem>
+
+@{
+    ViewData["Title"] = "Kanban Доска задач";
+}
+
+<div class="container-fluid mt-4">
+    <h2>Dashboard and Kanban Board</h2>
+
+    <div class="row text-white my-3 text-center">
+        <div class="col-md-3"><div class="p-3 bg-secondary rounded">In total: @ViewBag.TotalTasks</div></div>
+        <div class="col-md-3"><div class="p-3 bg-primary rounded">To Do: @ViewBag.TodoCount</div></div>
+        <div class="col-md-3"><div class="p-3 bg-warning text-dark rounded">In Progress: @ViewBag.InProgressCount</div></div>
+        <div class="col-md-3"><div class="p-3 bg-success rounded">Done: @ViewBag.DoneCount</div></div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-8">
+            <form asp-action="Index" method="get" class="row g-2">
+                <div class="col-auto">
+                    <input type="text" name="searchString" value="@ViewBag.CurrentSearch" class="form-control" placeholder="Search..." />
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-outline-primary">Find</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">Reset</a>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-4 text-end">
+            <a asp-action="Create" class="btn btn-success">+ New Task</a>
+        </div>
+    </div>
+
+    <div class="row">
+        @{
+            var todoTasks = Model.Where(t => t.Status == TaskManagementApp.Models.TaskStatusEnum.Todo);
+            var inProgressTasks = Model.Where(t => t.Status == TaskManagementApp.Models.TaskStatusEnum.InProgress);
+            var doneTasks = Model.Where(t => t.Status == TaskManagementApp.Models.TaskStatusEnum.Done);
+        }
+
+        <div class="col-md-4">
+            <div class="card bg-light">
+                <div class="card-header fw-bold text-secondary">To Do</div>
+                <div class="card-body">
+                    @if (!todoTasks.Any())
+                    {
+                        <p class="text-muted">No tasks</p>
+                    }
+                    @foreach (var item in todoTasks)
+                    {
+                        <div class="card mb-2 shadow-sm">
+                            <div class="card-body p-2">
+                                <h5 class="card-title fs-6">@item.Title</h5>
+                                <p class="card-text small text-muted">@item.Description</p>
+                                <span class="badge bg-info">@item.Priority</span>
+                                <small class="d-block text-danger mt-1">Due: @item.DueDate.ToString("yyyy-MM-dd")</small>
+                                <div class="mt-2 text-end">
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Edit</a>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Details</a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card bg-light">
+                <div class="card-header fw-bold text-warning">In Progress</div>
+                <div class="card-body">
+                    @if (!inProgressTasks.Any())
+                    {
+                        <p class="text-muted">No tasks</p>
+                    }
+                    @foreach (var item in inProgressTasks)
+                    {
+                        <div class="card mb-2 shadow-sm">
+                            <div class="card-body p-2">
+                                <h5 class="card-title fs-6">@item.Title</h5>
+                                <p class="card-text small text-muted">@item.Description</p>
+                                <span class="badge bg-warning text-dark">@item.Priority</span>
+                                <small class="d-block text-danger mt-1">Due: @item.DueDate.ToString("yyyy-MM-dd")</small>
+                                <div class="mt-2 text-end">
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Edit</a>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Details</a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card bg-light">
+                <div class="card-header fw-bold text-success">Done</div>
+                <div class="card-body">
+                    @if (!doneTasks.Any())
+                    {
+                        <p class="text-muted">No tasks</p>
+                    }
+                    @foreach (var item in doneTasks)
+                    {
+                        <div class="card mb-2 shadow-sm">
+                            <div class="card-body p-2">
+                                <h5 class="card-title fs-6">@item.Title</h5>
+                                <p class="card-text small text-muted">@item.Description</p>
+                                <span class="badge bg-success">@item.Priority</span>
+                                <small class="d-block text-muted mt-1">Due: @item.DueDate.ToString("yyyy-MM-dd")</small>
+                                <div class="mt-2 text-end">
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Edit</a>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Details</a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

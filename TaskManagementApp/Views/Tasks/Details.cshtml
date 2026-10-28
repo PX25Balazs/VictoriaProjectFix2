@@ -1,0 +1,27 @@
+﻿@model TaskManagementApp.Models.TaskItem
+
+@{
+    ViewData["Title"] = "Task Details";
+}
+
+<div class="container mt-4">
+    <h2>Task Details</h2>
+    <hr />
+    <div class="card col-md-8">
+        <div class="card-body">
+            <h4 class="card-title">@Model.Title</h4>
+            <h6 class="card-subtitle mb-3 text-muted">
+                Status: <span class="badge bg-info text-dark">@Model.Status</span>
+            </h6>
+            <p class="card-text">
+                <strong>Description:</strong><br />
+                @(string.IsNullOrEmpty(Model.Description) ? "No description available" : Model.Description)
+            </p>
+            <hr />
+            <div class="d-flex gap-2">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+                <a asp-action="Index" class="btn btn-secondary">Back to Board</a>
+            </div>
+        </div>
+    </div>
+</div>
